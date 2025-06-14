@@ -1,11 +1,11 @@
-$csproj = ".\WinUIExample\WinUIExample.csproj"
-$appName = "WinUIExample"
+$csproj = ".\Scheduler\Scheduler.csproj"
+$appName = "Scheduler"
 $publisher = "ひかり"
-$execFile = "WinUIExample.exe"
+$execFile = "Scheduler.exe"
 $version = (Get-Date).ToString("yy.M.d")
 $date = (Get-Date).ToString("yyyyMMdd")
-$publishDir = "WinUIExample\publish"
-$muiIcon = "WinUIExample\Assets\App.ico"
+$publishDir = "Scheduler\publish"
+$muiIcon = "Scheduler\Assets\App.ico"
 
 $startMenuPath = [Environment]::GetFolderPath("Programs")
 
