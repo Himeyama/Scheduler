@@ -137,13 +137,183 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" RowDefinitions="Auto, Auto, *">
+            <!-- 入力フォーム部分 -->
+            <Grid Margin="16" RowDefinitions="Auto, Auto, Auto">
+                <Grid ColumnDefinitions="*, Auto, Auto, Auto">
+                    <TextBox x:Name="InputTaskTextBox" PlaceholderText="タスク名を入力してください..." Header="タスク名" AcceptsReturn="True" TextChanged="InputTaskTextBox_TextChanged" />
+                    <ComboBox x:Name="InputPersonInChargeComboBox" Margin="8, 0, 0, 0" Header="担当者" Grid.Column="1" SelectedIndex="0">
+                        <ComboBoxItem Content="未定" />
+                        <ComboBoxItem Content="その他" />
+                    </ComboBox>
+                    <ComboBox x:Name="InputPriorityComboBox" Margin="8, 0, 0, 0" Header="優先度" Grid.Column="2" SelectedIndex="1">
+                        <ComboBoxItem Content="低" />
+                        <ComboBoxItem Content="中" />
+                        <ComboBoxItem Content="高" />
+                        <ComboBoxItem Content="緊急" />
+                        <ComboBoxItem Content="重要" />
+                        <ComboBoxItem Content="最優先" />
+                    </ComboBox>
+                    <ComboBox x:Name="InputStatusComboBox" Margin="8, 0, 0, 0" Header="状況" Grid.Column="3" SelectedIndex="0">
+                        <ComboBoxItem Content="未着手" />
+                        <ComboBoxItem Content="進行中" />
+                        <ComboBoxItem Content="完了" />
+                        <ComboBoxItem Content="保留" />
+                        <ComboBoxItem Content="中止" />
+                        <ComboBoxItem Content="延期" />
+                        <ComboBoxItem Content="再開" />
+                        <ComboBoxItem Content="検討中" />
+                        <ComboBoxItem Content="承認待ち" />
+                        <ComboBoxItem Content="却下" />
+                        <ComboBoxItem Content="承認済み" />
+                        <ComboBoxItem Content="レビュー待ち" />
+                        <ComboBoxItem Content="レビュー済み" />
+                        <ComboBoxItem Content="フィードバック待ち" />
+                        <ComboBoxItem Content="フィードバック済み" />
+                        <ComboBoxItem Content="クローズ" />
+                        <ComboBoxItem Content="アーカイブ" />
+                        <ComboBoxItem Content="削除" />
+                        <ComboBoxItem Content="再評価" />
+                        <ComboBoxItem Content="再計画" />
+                        <ComboBoxItem Content="再開待ち" />
+                        <ComboBoxItem Content="再評価待ち" />
+                        <ComboBoxItem Content="再計画待ち" />
+                        <ComboBoxItem Content="再開済み" />
+                        <ComboBoxItem Content="再評価済み" />
+                        <ComboBoxItem Content="再計画済み" />
+                        <ComboBoxItem Content="その他" />
+                    </ComboBox>
+                </Grid>
+                <Grid Grid.Row="1" ColumnDefinitions="Auto, *" Margin="0, 16, 0, 0">
+                    <Grid Grid.Column="0" RowDefinitions="Auto, Auto">
+                        <Grid ColumnDefinitions="Auto, Auto" Grid.Row="0">
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartPlanDatePicker" Header="開始予定日" Grid.Column="0" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndPlanDatePicker" Margin="8, 0, 0, 0" Header="終了予定日" Grid.Column="1" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto, Auto" Grid.Row="1" Margin="0, 8, 0, 0">
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartDatePicker" Header="開始日" Grid.Column="0" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndDatePicker" Margin="8, 0, 0, 0" Header="終了日" Grid.Column="1" />
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox x:Name="AdditionalInputTextBox" PlaceholderText="概要" AcceptsReturn="True" Margin="8, 8, 8, 0" VerticalAlignment="Stretch" />
+                    </Grid>                    
+                </Grid>
+                <Grid Grid.Row="2" ColumnDefinitions="*, *, *" Margin="0, 16, 0, 0">
+                    <Button Name="AddButton" Content="登録・変更" HorizontalAlignment="Stretch" Click="RegisterButton_Click" Style="{StaticResource AccentButtonStyle}" IsEnabled="False" />
+                    <Button Name="DeleteButton" Content="削除" Grid.Column="1" HorizontalAlignment="Stretch" Margin="8, 0, 0, 0" Click="DeleteButton_Click" IsEnabled="False" />
+                    <Button Content="入力をクリア" HorizontalAlignment="Stretch" Grid.Column="2" Margin="8, 0, 0, 0" Click="ClearInputButton_Click" />
+                </Grid>
+            </Grid>
+            <!-- リスト表示部分 -->
+            <Grid Grid.Row="1" Margin="8, 8, 8, 0" ColumnDefinitions="*, 80, 96, 96, 96, 96, 104, 104, 12">
+                <TextBlock 
+                    Grid.Column="0"
+                    Margin="12, 0, 0, 0"
+                    Text="タスク名"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="8, 0, 0, 0"
+                    Text="優先度"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock 
+                    Grid.Column="2"
+                    Margin="8, 0, 0, 0"
+                    Text="開始予定日"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock 
+                    Grid.Column="3"
+                    Margin="8, 0, 0, 0"
+                    Text="終了予定日"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock 
+                    Grid.Column="4"
+                    Margin="8, 0, 0, 0"
+                    Text="開始日"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock 
+                    Grid.Column="5"
+                    Margin="8, 0, 0, 0"
+                    Text="終了日"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock
+                    Grid.Column="6"
+                    Margin="8, 0, 0, 0"
+                    Text="担当者"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+                <TextBlock
+                    Grid.Column="7"
+                    Margin="8, 0, 0, 0"
+                    Text="状況"
+                    Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                    FontSize="12" />
+            </Grid>
+            <ScrollViewer Margin="8, 8, 8, 0" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <ListView x:Name="TaskList" SelectionChanged="TaskList_SelectionChanged" Tapped="TaskList_Tapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Task">
+                            <Grid ColumnDefinitions="*, 80, 96, 96, 96, 96, 104, 104" Margin="0, 8, 0, 8">
+                                <TextBlock 
+                                    Grid.Column="0"
+                                    Text="{x:Bind Name}"
+                                    TextWrapping="Wrap" />
+                                <Grid Grid.Column="1" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind Priority}"/>
+                                </Grid>
+                                <Grid Grid.Column="2" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind StartPlanDateText}"/>
+                                </Grid>
+                                <Grid Grid.Column="3" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind EndPlanDateText}"/>
+                                </Grid>
+                                <Grid Grid.Column="4" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind StartDateText}"/>
+                                </Grid>
+                                <Grid Grid.Column="5" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind EndDateText}"/>
+                                </Grid>
+                                <Grid Grid.Column="6" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind Assignee}"/>
+                                </Grid>
+                                <Grid Grid.Column="7" Margin="8, 0, 0, 0">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind Status}"/>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
         </Grid>
 
         <Grid Grid.Row="2">
             <Grid>
-                <TextBlock Grid.Column="0" x:Name="StatusBar" Margin="8, 0, 0, 0"
-                    FontSize="12" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="0"
+                        x:Name="StatusBar"
+                        Margin="8, 0, 0, 0"
+                           FontSize="12"
+                        VerticalAlignment="Center"/>
             </Grid>
         </Grid>
         <!-- I18n -->
