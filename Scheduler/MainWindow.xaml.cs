@@ -318,6 +318,11 @@ public sealed partial class MainWindow : Window
             Assignees.Items.Add(item);
         }
 
+        TextBox AssigneInputBox = new()
+        {
+            Margin = new Thickness(0, 8, 0, 0)
+        };
+
         Button DeleteButton = new()
         {
             Content = "削除",
@@ -325,12 +330,28 @@ public sealed partial class MainWindow : Window
             HorizontalContentAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(8, 0, 0, 0),
         };
+        DeleteButton.Click += (s, e) =>
+        {
+            if (Assignees.SelectedItem != null)
+            {
+                Assignees.Items.Remove(Assignees.SelectedItem);
+            }
+        };
 
         Button AddButton = new()
         {
             Content = "追加",
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Center
+        };
+        AddButton.Click += (s, e) =>
+        {
+            string newAssignee = AssigneInputBox.Text;
+            if (!string.IsNullOrWhiteSpace(newAssignee))
+            {
+                Assignees.Items.Add(newAssignee);
+                AssigneInputBox.Text = "";
+            }
         };
 
         Grid Buttons = new()
@@ -349,11 +370,6 @@ public sealed partial class MainWindow : Window
         };
         Grid.SetColumn(DeleteButton, 1);
 
-        TextBox AssigneInputBox = new()
-        {
-            Margin = new Thickness(0, 8, 0, 0)
-        };
-
         ContentDialog dialog = new()
         {
             XamlRoot = Content.XamlRoot,
@@ -368,10 +384,19 @@ public sealed partial class MainWindow : Window
                 }
             },
             PrimaryButtonText = "OK",
+            CloseButtonText = "キャンセル",
             DefaultButton = ContentDialogButton.Primary
         };
-        await dialog.ShowAsync();
 
-        Save();
+        ContentDialogResult result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            InputPersonInChargeComboBox.Items.Clear();
+            foreach (string item in Assignees.Items)
+            {
+                InputPersonInChargeComboBox.Items.Add(item);
+            }
+            Save();
+        }
     }
 }
