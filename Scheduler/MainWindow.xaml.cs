@@ -1,14 +1,25 @@
 using System;
+using Microsoft.UI.Xaml.Media;
+using System.Linq;
 using Common;
+using System.IO;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.Networking.NetworkOperators;
 using Windows.System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 
 namespace Scheduler;
+
+public class ProjectPlanningSaveFormat
+{
+    public List<string> Assignees { get; set; } = new();
+    public List<Task> Tasks { get; set; } = new();
+}
 
 public class Task
 {
@@ -24,6 +35,7 @@ public class Task
     public string Priority { get; set; }
     public string Assignee { get; set; }
     public string Status { get; set; }
+    public string Description { get; set; }
 }
 
 public sealed partial class MainWindow : Window
@@ -41,17 +53,16 @@ public sealed partial class MainWindow : Window
         // ZoomIn.KeyboardAcceleratorTextOverride = ZoomInText.Text;
         // ZoomOut.KeyboardAcceleratorTextOverride = ZoomOutText.Text;
 
-        // AddInputRow(); // 初期の入力行を追加
-        InputStartPlanDatePicker.SelectedDate = DateTime.Now;
-        InputEndPlanDatePicker.SelectedDate = DateTime.Now;
+        ClearInput();
+        Load();
     }
 
     void AutoSave_Toggled(object sender, RoutedEventArgs e)
     {
         try
         {
-            EnableAutoSave.Visibility = AutoSave.IsOn ? Visibility.Visible : Visibility.Collapsed;
-            DisableAutoSave.Visibility = AutoSave.IsOn ? Visibility.Collapsed : Visibility.Visible;
+            // EnableAutoSave.Visibility = AutoSave.IsOn ? Visibility.Visible : Visibility.Collapsed;
+            // DisableAutoSave.Visibility = AutoSave.IsOn ? Visibility.Collapsed : Visibility.Visible;
         }
         catch (Exception ex)
         {
@@ -121,9 +132,22 @@ public sealed partial class MainWindow : Window
                 StartPlanDate = InputStartPlanDatePicker.SelectedDate?.DateTime ?? DateTime.Now,
                 EndPlanDate = InputEndPlanDatePicker.SelectedDate?.DateTime ?? DateTime.Now,
                 Priority = $"{(InputPriorityComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}",
-                Assignee = $"{(InputPersonInChargeComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}",
-                Status = $"{(InputStatusComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}"
+                Assignee = $"{(InputPersonInChargeComboBox.SelectedItem as string) ?? ""}",
+                Status = $"{(InputStatusComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}",
+                Description = DescriptionInputTextBox.Text // 必要に応じて入力欄から取得する
             };
+
+            if (task.EndPlanDate < task.StartPlanDate)
+            {
+                _ = Dialog.ShowError(Content, "終了予定日が開始予定日より前になっています。");
+                return;
+            }
+
+            if (task.EndDate != null && task.StartDate != null && task.EndDate < task.StartDate)
+            {
+                _ = Dialog.ShowError(Content, "終了日が開始日より前になっています。");
+                return;
+            }
 
             task.StartPlanDateText = task.StartPlanDate.ToString("yyyy/MM/dd");
             task.EndPlanDateText = task.EndPlanDate.ToString("yyyy/MM/dd");
@@ -158,6 +182,8 @@ public sealed partial class MainWindow : Window
             }
 
             ClearInput();
+
+            Save();
         }
         catch (Exception ex)
         {
@@ -178,6 +204,7 @@ public sealed partial class MainWindow : Window
         InputEndDatePicker.SelectedDate = null;
         InputStartPlanDatePicker.SelectedDate = DateTime.Now;
         InputEndPlanDatePicker.SelectedDate = DateTime.Now;
+        DescriptionInputTextBox.Text = "";
         InputPersonInChargeComboBox.SelectedIndex = 0;
         InputPriorityComboBox.SelectedIndex = 1;
         InputStatusComboBox.SelectedIndex = 0;
@@ -193,6 +220,7 @@ public sealed partial class MainWindow : Window
         if (TaskList.SelectedItem is Task selectedTask)
         {
             TaskList.Items.Remove(selectedTask);
+            Save();
         }
     }
 
@@ -210,6 +238,7 @@ public sealed partial class MainWindow : Window
             InputEndDatePicker.SelectedDate = selectedTask.EndDate;
             InputStartPlanDatePicker.SelectedDate = selectedTask.StartPlanDate;
             InputEndPlanDatePicker.SelectedDate = selectedTask.EndPlanDate;
+            DescriptionInputTextBox.Text = selectedTask.Description;
             InputPriorityComboBox.SelectedItem = FindComboBoxItemByContent(InputPriorityComboBox, selectedTask.Priority);
             InputStatusComboBox.SelectedItem = FindComboBoxItemByContent(InputStatusComboBox, selectedTask.Status);
             InputPersonInChargeComboBox.SelectedItem = FindComboBoxItemByContent(InputPersonInChargeComboBox, selectedTask.Assignee);
@@ -217,7 +246,7 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private ComboBoxItem FindComboBoxItemByContent(ComboBox comboBox, string content)
+    private object FindComboBoxItemByContent(ComboBox comboBox, string content)
     {
         foreach (var item in comboBox.Items)
         {
@@ -225,7 +254,124 @@ public sealed partial class MainWindow : Window
             {
                 return comboBoxItem;
             }
+            else if (item is string str && str == content)
+            {
+                return str;
+            }
         }
         return null;
+    }
+
+    void Save()
+    {
+        ProjectPlanningSaveFormat ppsf = new()
+        {
+            Tasks = TaskList.Items.Cast<Task>().ToList(),
+            Assignees = InputPersonInChargeComboBox.Items.Cast<string>().ToList()
+        };
+        string json = JsonSerializer.Serialize<ProjectPlanningSaveFormat>(ppsf, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+
+        string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string targetDir = Path.Combine(directoryPath, ".p3");
+        if (!Directory.Exists(targetDir))
+        {
+            Directory.CreateDirectory(targetDir);
+            // 隠し属性を設定
+            DirectoryInfo dirInfo = new(targetDir);
+            dirInfo.Attributes |= FileAttributes.Hidden;
+        }
+        string filePath = Path.Combine(targetDir, "ProjectPlanning.json");
+        _ = File.WriteAllTextAsync(filePath, json);
+    }
+
+    async void Load()
+    {
+        string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string targetDir = Path.Combine(directoryPath, ".p3");
+        string filePath = Path.Combine(targetDir, "ProjectPlanning.json");
+        if (File.Exists(filePath))
+        {
+            string json = await File.ReadAllTextAsync(filePath);
+            ProjectPlanningSaveFormat ppsf = JsonSerializer.Deserialize<ProjectPlanningSaveFormat>(json);
+            if (ppsf != null && ppsf.Tasks != null)
+            {
+                TaskList.Items.Clear();
+                foreach (Task task in ppsf.Tasks)
+                {
+                    TaskList.Items.Add(task);
+                }
+
+                InputPersonInChargeComboBox.Items.Clear();
+                foreach (string assignee in ppsf.Assignees)
+                {
+                    InputPersonInChargeComboBox.Items.Add(assignee);
+                }
+            }
+        }
+    }
+
+    async void EditAssignessButton_Click(object sender, RoutedEventArgs e)
+    {
+        ListView Assignees = new();
+        foreach (string item in InputPersonInChargeComboBox.Items)
+        {
+            Assignees.Items.Add(item);
+        }
+
+        Button DeleteButton = new()
+        {
+            Content = "削除",
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            Margin = new Thickness(8, 0, 0, 0),
+        };
+
+        Button AddButton = new()
+        {
+            Content = "追加",
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            HorizontalContentAlignment = HorizontalAlignment.Center
+        };
+
+        Grid Buttons = new()
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
+                new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+            },
+            Children =
+            {
+                AddButton,
+                DeleteButton
+            },
+            Margin = new Thickness(0, 8, 0, 0),
+        };
+        Grid.SetColumn(DeleteButton, 1);
+
+        TextBox AssigneInputBox = new()
+        {
+            Margin = new Thickness(0, 8, 0, 0)
+        };
+
+        ContentDialog dialog = new()
+        {
+            XamlRoot = Content.XamlRoot,
+            Title = "担当者の編集",
+            Content = new StackPanel()
+            {
+                Children =
+                {
+                    Assignees,
+                    AssigneInputBox,
+                    Buttons,
+                }
+            },
+            PrimaryButtonText = "OK",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        await dialog.ShowAsync();
+
+        Save();
     }
 }
