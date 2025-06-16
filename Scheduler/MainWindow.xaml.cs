@@ -124,6 +124,36 @@ public sealed partial class MainWindow : Window
 
         try
         {
+            string priority = "";
+            if (InputPriorityComboBox.SelectedItem is ComboBoxItem item)
+            {
+                priority = $"{item.Content}";
+            }
+            else if (InputPriorityComboBox.SelectedItem is string textItem)
+            {
+                priority = textItem;
+            }
+
+            string assignee = "";
+            if (InputPersonInChargeComboBox.SelectedItem is ComboBoxItem assigneeItem)
+            {
+                assignee = $"{assigneeItem.Content}";
+            }
+            else if (InputPersonInChargeComboBox.SelectedItem is string assigneeText)
+            {
+                assignee = assigneeText;
+            }
+
+            string status = "";
+            if (InputStatusComboBox.SelectedItem is string statusText)
+            {
+                status = statusText;
+            }
+            else if (InputStatusComboBox.SelectedItem is ComboBoxItem statusItem)
+            {
+                status = $"{statusItem.Content}";
+            }
+
             Task task = new()
             {
                 Name = taskName,
@@ -131,9 +161,9 @@ public sealed partial class MainWindow : Window
                 EndDate = InputEndDatePicker.SelectedDate?.DateTime,
                 StartPlanDate = InputStartPlanDatePicker.SelectedDate?.DateTime ?? DateTime.Now,
                 EndPlanDate = InputEndPlanDatePicker.SelectedDate?.DateTime ?? DateTime.Now,
-                Priority = $"{(InputPriorityComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}",
-                Assignee = $"{(InputPersonInChargeComboBox.SelectedItem as string) ?? ""}",
-                Status = $"{(InputStatusComboBox.SelectedItem as ComboBoxItem)?.Content ?? ""}",
+                Priority = priority,
+                Assignee = assignee,
+                Status = status,
                 Description = DescriptionInputTextBox.Text // 必要に応じて入力欄から取得する
             };
 
@@ -187,7 +217,7 @@ public sealed partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            System.IO.File.AppendAllText("debug.txt", ex.Message + Environment.NewLine);
+            File.AppendAllText("debug.txt", ex.ToString() + Environment.NewLine);
         }
     }
 
@@ -264,12 +294,24 @@ public sealed partial class MainWindow : Window
 
     void Save()
     {
+        List<string> Assignees = [];
+        foreach (object item in InputPersonInChargeComboBox.Items)
+        {
+            if (item is ComboBoxItem cbItem)
+            {
+                Assignees.Add($"{cbItem.Content}");
+            } else if (item is string txtItem)
+            {
+                Assignees.Add(txtItem);
+            }
+        }
+
         ProjectPlanningSaveFormat ppsf = new()
         {
             Tasks = TaskList.Items.Cast<Task>().ToList(),
-            Assignees = InputPersonInChargeComboBox.Items.Cast<string>().ToList()
+            Assignees = Assignees
         };
-        string json = JsonSerializer.Serialize<ProjectPlanningSaveFormat>(ppsf, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+        string json = JsonSerializer.Serialize(ppsf, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
 
         string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         string targetDir = Path.Combine(directoryPath, ".p3");
@@ -307,6 +349,20 @@ public sealed partial class MainWindow : Window
                     InputPersonInChargeComboBox.Items.Add(assignee);
                 }
             }
+        }
+        else
+        {
+            ProjectPlanningSaveFormat ppsf = new()
+            {
+                Tasks = [],
+                Assignees = []
+            };
+            string json = JsonSerializer.Serialize(ppsf, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            Directory.CreateDirectory(targetDir);
+            // 隠し属性を設定
+            DirectoryInfo dirInfo = new(targetDir);
+            dirInfo.Attributes |= FileAttributes.Hidden;
+            _ = File.WriteAllTextAsync(filePath, json);
         }
     }
 
