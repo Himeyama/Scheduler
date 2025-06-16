@@ -19,7 +19,7 @@
             <Grid ColumnDefinitions="Auto, *">
                 <!-- <Grid ColumnDefinitions="Auto, Auto">
                     <Grid Grid.Column="0" Margin="8, 0, 0, 0" ColumnDefinitions="Auto, Auto">
-                        <TextBlock FontSize="12" Margin="4, 11, 4, 0" Grid.Column="0" Text="自動保存" />
+                        <TextBlock FontSize="12" Margin="4, 11, 4, 0" Grid.Column="0" Text="自動保存" x:Uid="AutoSaveText" />
                         <Grid Grid.Column="1" Width="40">
                             <ToggleSwitch Toggled="AutoSave_Toggled" IsOn="False" OffContent="" OnContent="" Name="AutoSave" />
                             <TextBlock Text="有効" Visibility="Collapsed" IsHitTestVisible="False" FontSize="8" Margin="5, 14, 0, 0" Name="EnableAutoSave"/>
@@ -145,7 +145,7 @@
                     <ComboBox x:Name="InputPersonInChargeComboBox" Margin="8, 0, 0, 0" Grid.Column="1" SelectedIndex="0">
                         <ComboBox.Header>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="担当者" Margin="0, 0, 4, 0" />
+                                <TextBlock x:Uid="Assignee" Text="担当者" Margin="0, 0, 4, 0" />
                                 <Button Background="Transparent" BorderThickness="0" Click="EditAssignessButton_Click">
                                     <Button.Content>
                                         <FontIcon Glyph="&#xE70F;" FontSize="10" />
@@ -226,48 +226,56 @@
             <!-- リスト表示部分 -->
             <Grid Grid.Row="1" Margin="8, 8, 8, 0" ColumnDefinitions="*, 80, 96, 96, 96, 96, 104, 104, 12">
                 <TextBlock 
+                    x:Uid="TaskName" 
                     Grid.Column="0"
                     Margin="12, 0, 0, 0"
                     Text="作業名"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock
+                    x:Uid="Priority" 
                     Grid.Column="1"
                     Margin="8, 0, 0, 0"
                     Text="優先度"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock 
+                    x:Uid="StartPlanDate" 
                     Grid.Column="2"
                     Margin="8, 0, 0, 0"
                     Text="開始予定日"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock 
+                    x:Uid="EndPlanDate" 
                     Grid.Column="3"
                     Margin="8, 0, 0, 0"
                     Text="終了予定日"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock 
+                    x:Uid="StartDate" 
                     Grid.Column="4"
                     Margin="8, 0, 0, 0"
                     Text="開始日"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock 
+                    x:Uid="EndDate" 
                     Grid.Column="5"
                     Margin="8, 0, 0, 0"
                     Text="終了日"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock
+                    x:Uid="Assignee" 
                     Grid.Column="6"
                     Margin="8, 0, 0, 0"
                     Text="担当者"
                     Foreground="{StaticResource TextFillColorTertiaryBrush}"
                     FontSize="12" />
                 <TextBlock
+                    x:Uid="Status" 
                     Grid.Column="7"
                     Margin="8, 0, 0, 0"
                     Text="状況"

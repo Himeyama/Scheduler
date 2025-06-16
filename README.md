@@ -10,3 +10,4 @@
 
 ### アーカイブ
 - [Release v25.6.16 · Himeyama/Scheduler](https://github.com/Himeyama/Scheduler/releases/tag/v25.6.16)
+- [Release v25.6.17 · Himeyama/Scheduler](https://github.com/Himeyama/Scheduler/releases/tag/v25.6.17)
