@@ -23,4 +23,24 @@
   <data name="ZoomInText.Text" xml:space="preserve"><value>Ctrl + Plus (+)</value></data>
   <data name="ZoomOutText.Text" xml:space="preserve"><value>Ctrl + Minus (-)</value></data>
   <data name="AppTitleText.Text" xml:space="preserve"><value>Project Progress Planning Manager</value></data>
+  <data name="InputTaskName.Header" xml:space="preserve"><value>Task name</value></data>
+  <data name="InputTaskName.PlaceholderText" xml:space="preserve"><value>Please enter the task name...</value></data>
+  <data name="Assignee.Text" xml:space="preserve"><value>Assignee</value></data>
+  <data name="PriorityComboBox.Header" xml:space="preserve"><value>Priority</value></data>
+  <data name="InputStatusComboBox.Header" xml:space="preserve"><value>Status</value></data>
+  <data name="TaskName.Text" xml:space="preserve"><value>Task Name</value></data>
+  <data name="Priority.Text" xml:space="preserve"><value>Priority</value></data>
+  <data name="StartPlanDate.Text" xml:space="preserve"><value>Start Planned Date</value></data>
+  <data name="EndPlanDate.Text" xml:space="preserve"><value>End Planned Date</value></data>
+  <data name="StartDate.Text" xml:space="preserve"><value>Start Date</value></data>
+  <data name="EndDate.Text" xml:space="preserve"><value>End Date</value></data>
+  <data name="Status.Text" xml:space="preserve"><value>Status</value></data>
+  <data name="Description.Text" xml:space="preserve"><value>Description</value></data>
+  <data name="StartPlanDatePicker.Header" xml:space="preserve"><value>Start Planned Date</value></data>
+  <data name="EndPlanDatePicker.Header" xml:space="preserve"><value>End Planned Date</value></data>
+  <data name="StartDatePicker.Header" xml:space="preserve"><value>Start Date</value></data>
+  <data name="EndDatePicker.Header" xml:space="preserve"><value>End Date</value></data>
+  <data name="RegisterChangeButton.Content" xml:space="preserve"><value>Register / Change</value></data>
+  <data name="DeleteButton.Content" xml:space="preserve"><value>Delete</value></data>
+  <data name="ClearInputButton.Content" xml:space="preserve"><value>Clear input</value></data>
 </root>

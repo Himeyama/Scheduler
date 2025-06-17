@@ -23,4 +23,24 @@
   <data name="ZoomInText.Text" xml:space="preserve"><value>Ctrl + プラス記号 (+)</value></data>
   <data name="ZoomOutText.Text" xml:space="preserve"><value>Ctrl + マイナス記号 (-)</value></data>
   <data name="AppTitleText.Text" xml:space="preserve"><value>進捗管理</value></data>
+  <data name="InputTaskName.Header" xml:space="preserve"><value>作業名</value></data>
+  <data name="InputTaskName.PlaceholderText" xml:space="preserve"><value>タスク名を入力してください...</value></data>
+  <data name="Assignee.Text" xml:space="preserve"><value>担当者</value></data>
+  <data name="PriorityComboBox.Header" xml:space="preserve"><value>優先度</value></data>
+  <data name="InputStatusComboBox.Header" xml:space="preserve"><value>状況</value></data>
+  <data name="TaskName.Text" xml:space="preserve"><value>作業名</value></data>
+  <data name="Priority.Text" xml:space="preserve"><value>優先度</value></data>
+  <data name="StartPlanDate.Text" xml:space="preserve"><value>開始予定日</value></data>
+  <data name="EndPlanDate.Text" xml:space="preserve"><value>終了予定日</value></data>
+  <data name="StartDate.Text" xml:space="preserve"><value>開始日</value></data>
+  <data name="EndDate.Text" xml:space="preserve"><value>終了日</value></data>
+  <data name="Status.Text" xml:space="preserve"><value>状況</value></data>
+  <data name="Description.Text" xml:space="preserve"><value>説明</value></data>
+  <data name="StartPlanDatePicker.Header" xml:space="preserve"><value>開始予定日</value></data>
+  <data name="EndPlanDatePicker.Header" xml:space="preserve"><value>終了予定日</value></data>
+  <data name="StartDatePicker.Header" xml:space="preserve"><value>開始日</value></data>
+  <data name="EndDatePicker.Header" xml:space="preserve"><value>終了日</value></data>
+  <data name="RegisterChangeButton.Content" xml:space="preserve"><value>登録/変更</value></data>
+  <data name="DeleteButton.Content" xml:space="preserve"><value>削除</value></data>
+  <data name="ClearInputButton.Content" xml:space="preserve"><value>入力クリア</value></data>
 </root>

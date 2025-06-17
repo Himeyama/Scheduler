@@ -141,7 +141,7 @@
             <!-- 入力フォーム部分 -->
             <Grid Margin="16" RowDefinitions="Auto, Auto, Auto">
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto">
-                    <TextBox x:Name="InputTaskTextBox" PlaceholderText="タスク名を入力してください..." Header="タスク名" AcceptsReturn="True" TextChanged="InputTaskTextBox_TextChanged" />
+                    <TextBox x:Name="InputTaskTextBox" PlaceholderText="タスク名を入力してください..." x:Uid="InputTaskName" Header="作業名" AcceptsReturn="True" TextChanged="InputTaskTextBox_TextChanged" />
                     <ComboBox x:Name="InputPersonInChargeComboBox" Margin="8, 0, 0, 0" Grid.Column="1" SelectedIndex="0">
                         <ComboBox.Header>
                             <StackPanel Orientation="Horizontal">
@@ -156,13 +156,20 @@
                         <ComboBoxItem Content="未定" />
                         <ComboBoxItem Content="その他" />
                     </ComboBox>
-                    <ComboBox x:Name="InputPriorityComboBox" Margin="8, 0, 0, 0" Header="優先度" Grid.Column="2" SelectedIndex="1">
+                    <ComboBox x:Name="InputPriorityComboBox" Margin="8, 0, 0, 0" Header="優先度" Grid.Column="2" SelectedIndex="1" x:Uid="PriorityComboBox">
+                        <ComboBoxItem Content="最低" />
                         <ComboBoxItem Content="低" />
                         <ComboBoxItem Content="中" />
                         <ComboBoxItem Content="高" />
-                        <ComboBoxItem Content="緊急" />
+                        <ComboBoxItem Content="最高" />
                         <ComboBoxItem Content="重要" />
+                        <ComboBoxItem Content="最重要" />
+                        <ComboBoxItem Content="超最重要" />
                         <ComboBoxItem Content="最優先" />
+                        <ComboBoxItem Content="超最優先" />
+                        <ComboBoxItem Content="緊急" />
+                        <ComboBoxItem Content="超緊急" />
+                        <ComboBoxItem Content="至急" />
                     </ComboBox>
                     <ComboBox x:Name="InputStatusComboBox" Margin="8, 0, 0, 0" Header="状況" Grid.Column="3" SelectedIndex="0">
                         <ComboBoxItem Content="未着手" />
@@ -205,22 +212,22 @@
                 <Grid Grid.Row="1" ColumnDefinitions="Auto, *" Margin="0, 16, 0, 0">
                     <Grid Grid.Column="0" RowDefinitions="Auto, Auto">
                         <Grid ColumnDefinitions="Auto, Auto" Grid.Row="0">
-                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartPlanDatePicker" Header="開始予定日" Grid.Column="0" />
-                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndPlanDatePicker" Margin="8, 0, 0, 0" Header="終了予定日" Grid.Column="1" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartPlanDatePicker" Header="開始予定日" Grid.Column="0" x:Uid="StartPlanDatePicker" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndPlanDatePicker" Margin="8, 0, 0, 0" Header="終了予定日" Grid.Column="1" x:Uid="EndPlanDatePicker" />
                         </Grid>
                         <Grid ColumnDefinitions="Auto, Auto" Grid.Row="1" Margin="0, 8, 0, 0">
-                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartDatePicker" Header="開始日" Grid.Column="0" />
-                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndDatePicker" Margin="8, 0, 0, 0" Header="終了日" Grid.Column="1" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputStartDatePicker" Header="開始日" Grid.Column="0" x:Uid="StartDatePicker" />
+                            <DatePicker HorizontalAlignment="Left" x:Name="InputEndDatePicker" Margin="8, 0, 0, 0" Header="終了日" Grid.Column="1" x:Uid="EndDatePicker" />
                         </Grid>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <TextBox x:Name="DescriptionInputTextBox" PlaceholderText="概要" AcceptsReturn="True" Margin="8, 8, 0, 0" VerticalAlignment="Stretch" />
-                    </Grid>                    
+                        <TextBox x:Name="DescriptionInputTextBox" PlaceholderText="概要" AcceptsReturn="True" Margin="8, 8, 0, 0" VerticalAlignment="Stretch" x:Uid="Description" />
+                    </Grid>
                 </Grid>
                 <Grid Grid.Row="2" ColumnDefinitions="*, *, *" Margin="0, 16, 0, 0">
-                    <Button Name="AddButton" Content="登録・変更" HorizontalAlignment="Stretch" Click="RegisterButton_Click" Style="{StaticResource AccentButtonStyle}" IsEnabled="False" />
-                    <Button Name="DeleteButton" Content="削除" Grid.Column="1" HorizontalAlignment="Stretch" Margin="8, 0, 0, 0" Click="DeleteButton_Click" IsEnabled="False" />
-                    <Button Content="入力をクリア" HorizontalAlignment="Stretch" Grid.Column="2" Margin="8, 0, 0, 0" Click="ClearInputButton_Click" />
+                    <Button Name="AddButton" Content="登録・変更" HorizontalAlignment="Stretch" Click="RegisterButton_Click" Style="{StaticResource AccentButtonStyle}" IsEnabled="False" x:Uid="RegisterChangeButton" />
+                    <Button Name="DeleteButton" Content="削除" Grid.Column="1" HorizontalAlignment="Stretch" Margin="8, 0, 0, 0" Click="DeleteButton_Click" IsEnabled="False" x:Uid="DeleteButton" />
+                    <Button Content="入力をクリア" HorizontalAlignment="Stretch" Grid.Column="2" Margin="8, 0, 0, 0" Click="ClearInputButton_Click" x:Uid="ClearInputButton" />
                 </Grid>
             </Grid>
             <!-- リスト表示部分 -->
