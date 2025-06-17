@@ -369,9 +369,14 @@ public sealed partial class MainWindow : Window
     async void EditAssignessButton_Click(object sender, RoutedEventArgs e)
     {
         ListView Assignees = new();
-        foreach (string item in InputPersonInChargeComboBox.Items)
+        foreach (object item in InputPersonInChargeComboBox.Items)
         {
-            Assignees.Items.Add(item);
+            if (item is ComboBoxItem comboBoxItem)
+            {
+                Assignees.Items.Add($"{comboBoxItem.Content}");
+            } else if (item is string textItem) {
+                Assignees.Items.Add(textItem);
+            }
         }
 
         TextBox AssigneInputBox = new()
@@ -381,7 +386,7 @@ public sealed partial class MainWindow : Window
 
         Button DeleteButton = new()
         {
-            Content = "削除",
+            Content = DeleteText.Text,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(8, 0, 0, 0),
@@ -396,7 +401,7 @@ public sealed partial class MainWindow : Window
 
         Button AddButton = new()
         {
-            Content = "追加",
+            Content = AddText.Text,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Center
         };
@@ -429,7 +434,7 @@ public sealed partial class MainWindow : Window
         ContentDialog dialog = new()
         {
             XamlRoot = Content.XamlRoot,
-            Title = "担当者の編集",
+            Title = EditAssigneeText.Text,
             Content = new StackPanel()
             {
                 Children =
@@ -440,7 +445,7 @@ public sealed partial class MainWindow : Window
                 }
             },
             PrimaryButtonText = "OK",
-            CloseButtonText = "キャンセル",
+            CloseButtonText = CancelText.Text,
             DefaultButton = ContentDialogButton.Primary
         };
 

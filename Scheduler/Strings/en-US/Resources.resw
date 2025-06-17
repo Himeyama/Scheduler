@@ -43,4 +43,7 @@
   <data name="RegisterChangeButton.Content" xml:space="preserve"><value>Register / Change</value></data>
   <data name="DeleteButton.Content" xml:space="preserve"><value>Delete</value></data>
   <data name="ClearInputButton.Content" xml:space="preserve"><value>Clear input</value></data>
+  <data name="DeleteText.Text" xml:space="preserve"><value>Delete</value></data>
+  <data name="AddText.Text" xml:space="preserve"><value>Add</value></data>
+  <data name="EditAssigneeText.Text" xml:space="preserve"><value>Edit Assignee</value></data>
 </root>

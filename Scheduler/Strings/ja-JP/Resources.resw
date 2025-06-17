@@ -43,4 +43,7 @@
   <data name="RegisterChangeButton.Content" xml:space="preserve"><value>登録/変更</value></data>
   <data name="DeleteButton.Content" xml:space="preserve"><value>削除</value></data>
   <data name="ClearInputButton.Content" xml:space="preserve"><value>入力クリア</value></data>
+  <data name="DeleteText.Text" xml:space="preserve"><value>削除</value></data>
+  <data name="AddText.Text" xml:space="preserve"><value>追加</value></data>
+  <data name="EditAssigneeText.Text" xml:space="preserve"><value>担当者の編集</value></data>
 </root>

@@ -153,8 +153,6 @@
                                 </Button>
                             </StackPanel>
                         </ComboBox.Header>
-                        <ComboBoxItem Content="未定" />
-                        <ComboBoxItem Content="その他" />
                     </ComboBox>
                     <ComboBox x:Name="InputPriorityComboBox" Margin="8, 0, 0, 0" Header="優先度" Grid.Column="2" SelectedIndex="1" x:Uid="PriorityComboBox">
                         <ComboBoxItem Content="最低" />
@@ -353,6 +351,10 @@
         <Grid Visibility="Collapsed">
             <TextBlock x:Uid="ZoomInText" Name="ZoomInText"/>
             <TextBlock x:Uid="ZoomOutText" Name="ZoomOutText"/>
+            <TextBlock x:Uid="DeleteText" Name="DeleteText"/>
+            <TextBlock x:Uid="AddText" Name="AddText"/>
+            <TextBlock x:Uid="EditAssigneeText" Name="EditAssigneeText"/>
+            <TextBlock x:Uid="CancelText" Name="CancelText"/>
         </Grid>
     </Grid>
 </Window>
